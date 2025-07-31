@@ -3,6 +3,7 @@ from typing import Any
 from unittest import TestCase, main
 from os import path, rmdir, remove, makedirs
 from src.json_handler_caramajau.json_handler import JSONHandler
+from parameterized import parameterized  # type: ignore
 
 
 class TestJSONHandler(TestCase):
@@ -26,13 +27,26 @@ class TestJSONHandler(TestCase):
         read_data: Mapping[str, str | int] = handler.read_json()
         self.assertEqual(read_data, data)
 
-    def test_write_json__given_valid_data__creates_directory_and_file(self) -> None:
+    # Expand had to be used with unittest
+    @parameterized.expand(  # type: ignore
+        [
+            ({"dict": {}},),
+            ({"list": []},),
+            ({"str": "hello"},),
+            ({"int": 1},),
+            ({"float": 0.1},),
+            ({"bool": True},),
+            ({"none": None},),
+        ]
+    )
+    def test_write_json_given_serializable_type__creates_directory_and_file(
+        self, data: Mapping[str, Any]
+    ) -> None:
         # Make sure there is no directory or file
         self.assertFalse(path.exists(self.__test_dir))
         self.assertFalse(path.exists(self.__test_file))
 
-        data: dict[str, int] = {"a": 1}
-        handler: JSONHandler[int] = JSONHandler(self.__test_file)
+        handler: JSONHandler[Any] = JSONHandler(self.__test_file)
 
         handler.write_json(data)
         self.assertTrue(path.exists(self.__test_dir))
