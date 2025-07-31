@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling >= 1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "json_handler_caramajau"
+version = "0.0.1"
+authors = [
+  { name="Caramajau" },
+]
+description = "Code to make it easier to read and write to JSON files"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: File Formats :: JSON",
+    "Topic :: Software Development :: Libraries",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/Caramajau/json-handler"
+Issues = "https://github.com/Caramajau/json-handler/issues"
