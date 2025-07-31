@@ -17,17 +17,29 @@ class TestJSONHandler(TestCase):
         result: Mapping[str, str] = handler.read_json()
         self.assertEqual(result, {})
 
-    def test_write_json__given_valid_data_read_json__returns_data(self) -> None:
-        data: dict[str, str | int] = {"key": "value", "num": 1337}
-        handler: JSONHandler[str | int] = JSONHandler(self.__test_file)
+    # Expand had to be used with unittest
+    @parameterized.expand(  # type: ignore
+        [
+            ({"dict": {}},),
+            ({"list": []},),
+            ({"str": "hello"},),
+            ({"int": 1},),
+            ({"float": 0.1},),
+            ({"bool": True},),
+            ({"none": None},),
+        ]
+    )
+    def test_write_json__given_serializable_type_read_json__returns_data(
+        self, data: Mapping[str, Any]
+    ) -> None:
+        handler: JSONHandler[Any] = JSONHandler(self.__test_file)
 
         handler.write_json(data)
         self.assertTrue(path.exists(self.__test_file))
 
-        read_data: Mapping[str, str | int] = handler.read_json()
+        read_data: Mapping[str, Any] = handler.read_json()
         self.assertEqual(read_data, data)
 
-    # Expand had to be used with unittest
     @parameterized.expand(  # type: ignore
         [
             ({"dict": {}},),
