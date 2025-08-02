@@ -11,9 +11,13 @@ class JSONHandler[T]:
 
     def __init__(self, file_path: str) -> None:
         """
-        Initialize the JSON handler with the specified file path. 
+        Initialize the JSON handler with the specified file path. Can be relative or absolute, and can be without the .json extension.
+        If the file path does not end with .json, it will be added automatically.
         """
-        self.__file_path: str = file_path
+        self.__file_path: str = file_path if path.isabs(file_path) else path.abspath(file_path)
+
+        if not self.__file_path.endswith(".json"):
+            self.__file_path += ".json"
 
     def read_json(self) -> Mapping[str, T]:
         """Read JSON data from the file."""
