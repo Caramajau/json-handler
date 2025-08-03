@@ -4,17 +4,18 @@ from collections.abc import Mapping
 
 
 class JSONHandler[T]:
-    """
-    Class to make it easier to read and write to JSON files.
+    """Class to make it easier to read and write to a JSON file.
     If a non-serializable type is given, then a JSON file will not be created.
     """
 
     def __init__(self, file_path: str) -> None:
-        """
-        Initialize the JSON handler with the specified file path. Can be relative or absolute, and can be without the .json extension.
+        """Initialize the JSON handler with the specified file path.
+        Can be relative or absolute, and can be without the .json extension.
         If the file path does not end with .json, it will be added automatically.
         """
-        self.__file_path: str = file_path if path.isabs(file_path) else path.abspath(file_path)
+        self.__file_path: str = (
+            file_path if path.isabs(file_path) else path.abspath(file_path)
+        )
 
         if not self.__file_path.endswith(".json"):
             self.__file_path += ".json"
@@ -32,7 +33,9 @@ class JSONHandler[T]:
             return {}
 
     def write_json(self, data: Mapping[str, T]) -> None:
-        """Write JSON data to the file, creating the file if it does not exist."""
+        """Write JSON data to the file, creating the file if it does not exist.
+        If the data is not serializable or an OSError occurs, the file will not be created.
+        """
         try:
             directory: str = path.dirname(self.__file_path)
             if not path.exists(directory):
@@ -41,13 +44,16 @@ class JSONHandler[T]:
 
             with open(self.__file_path, "w", encoding="utf-8") as file:
                 dump(data, file, indent=4)
+
         except TypeError as e:
             print(f"Serialization error occurred: {e}")
-            print("Removing file")
             self.__remove_file()
+
         except OSError as e:
             print(f"File operation error occurred: {e}")
+            self.__remove_file()
 
     def __remove_file(self) -> None:
         if path.exists(self.__file_path):
+            print("Removing file")
             remove(self.__file_path)
