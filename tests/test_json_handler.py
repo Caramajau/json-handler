@@ -139,5 +139,6 @@ class TestJSONHandler(TestCase):
         if path.exists(self.__test_dir):
             rmtree(self.__test_dir)
 
+
 if __name__ == "__main__":
     main()
