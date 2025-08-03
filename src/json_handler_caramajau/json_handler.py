@@ -5,14 +5,23 @@ from collections.abc import Mapping
 
 class JSONHandler[T]:
     """Class to make it easier to read and write to a JSON file.
-    If a non-serializable type is given, then a JSON file will not be created.
+    If a non-serializable type is given, then the JSON file will not be created.
     """
 
     def __init__(self, file_path: str) -> None:
         """Initialize the JSON handler with the specified file path.
         Can be relative or absolute, and can be without the .json extension.
         If the file path does not end with .json, it will be added automatically.
+        A ValueError will be raised if the file path is empty.
+
+        Args:
+            file_path (str): The path to the JSON file. Can be relative or absolute.
+        Raises:
+            ValueError: If the file path is empty.
         """
+        if not file_path:
+            raise ValueError("File path cannot be empty.")
+
         self.__file_path: str = (
             file_path if path.isabs(file_path) else path.abspath(file_path)
         )
@@ -21,7 +30,7 @@ class JSONHandler[T]:
             self.__file_path += ".json"
 
     def read_json(self) -> Mapping[str, T]:
-        """Read JSON data from the file."""
+        """Read JSON data from the file with utf-8 encoding."""
         if not path.exists(self.__file_path):
             print(f"File not found at path {self.__file_path}")
             return {}
@@ -33,8 +42,11 @@ class JSONHandler[T]:
             return {}
 
     def write_json(self, data: Mapping[str, T]) -> None:
-        """Write JSON data to the file, creating the file if it does not exist.
+        """Write JSON data to the file with utf-8 encoding, creating the file if it does not exist.
         If the data is not serializable or an OSError occurs, the file will not be created.
+
+        Args:
+            data (Mapping[str, T]): The data to write to the JSON file.
         """
         try:
             directory: str = path.dirname(self.__file_path)

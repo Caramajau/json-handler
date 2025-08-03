@@ -16,6 +16,10 @@ class TestJSONHandler(TestCase):
         # Keep track of files created outside of the test_data directory
         self.__created_files: list[str] = []
 
+    def test_constructor__given_empty_file_name__raises_value_error(self) -> None:
+        with self.assertRaises(ValueError):
+            JSONHandler("")
+
     def test_read_json__given_file_not_exists__returns_empty(self) -> None:
         handler: JSONHandler[str] = JSONHandler(self.__test_file)
 
