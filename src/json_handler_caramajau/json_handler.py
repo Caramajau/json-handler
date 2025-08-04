@@ -1,6 +1,6 @@
-from json import load, dump, JSONDecodeError
-from os import path, makedirs, remove
 from collections.abc import Mapping
+from json import JSONDecodeError, dump, load
+from os import makedirs, path, remove
 
 
 class JSONHandler[T]:
