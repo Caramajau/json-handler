@@ -14,8 +14,9 @@ The class utilizes generics, allowing you to specify the type of data you want t
 
 #### Example code
 ```python
+from collections.abc import Mapping
+
 from json_handler_caramajau.json_handler import JSONHandler
-from typing import Mapping
 
 handler: JSONHandler[str] = JSONHandler("path/to/your/file")
 

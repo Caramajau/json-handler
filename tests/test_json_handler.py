@@ -1,10 +1,12 @@
 from collections.abc import Callable, Mapping
+from os import makedirs, path, remove
 from shutil import rmtree
 from typing import Any, Final
 from unittest import TestCase, main
-from os import path, makedirs, remove
-from src.json_handler_caramajau.json_handler import JSONHandler
+
 from parameterized import parameterized  # type: ignore
+
+from src.json_handler_caramajau.json_handler import JSONHandler
 
 
 class TestJSONHandler(TestCase):
